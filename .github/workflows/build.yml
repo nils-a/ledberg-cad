@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Build male part
+        uses: flat35hd99/openscad-actions@v1.4
+        with:
+          scad_file: led_bar_sockets.scad
+          output_file: led_bar_socket_male.stl
+          options: "-D print_male=true -D print_female=false"
+      - name: Build female part
+        uses: flat35hd99/openscad-actions@v1.4
+        with:
+          scad_file: led_bar_sockets.scad
+          output_file: led_bar_socket_female.stl
+          options: "-D print_male=false -D print_female=true"
+      - name: Build full
+        uses: flat35hd99/openscad-actions@v1.4
+        with:
+          scad_file: led_bar_sockets.scad
+          output_file: led_bar_socket_female.stl
+          options: "-D print_male=true -D print_female=true"
+      - name: Upload stl file as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: stl-files
+          path: *.stl
