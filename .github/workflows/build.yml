@@ -2,9 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -30,7 +28,7 @@ jobs:
         uses: flat35hd99/openscad-actions@v1.4
         with:
           scad_file: led_bar_sockets.scad
-          output_file: led_bar_socket_female.stl
+          output_file: led_bar_sockets.stl
           options: "-D print_male=true -D print_female=true"
       - name: Upload stl file as artifact
         uses: actions/upload-artifact@v2
